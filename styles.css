@@ -14,6 +14,7 @@
    --text-secondary: rgba(255, 255, 255, 0.8);
    --card-bg: rgba(255, 255, 255, 0.1);
    --card-border: rgba(255, 255, 255, 0.2);
+   /* Default Day colors (Cloudy/Default) */
    --bg-top:#1e3c72;
    --bg-mid:#2a5298;
    --bg-bot:#7e8ba3;
@@ -27,10 +28,65 @@
    --text-secondary: rgba(255, 255, 255, 0.7);
    --card-bg: rgba(255, 255, 255, 0.05);
    --card-border: rgba(255, 255, 255, 0.1);
+   /* Default Night colors (Cloudy/Default) */
    --bg-top:#000000;
    --bg-mid:#0b0b1a;
    --bg-bot:#111122;
 }
+
+
+/* --- ⭐️ START DYNAMIC BACKGROUND OVERRIDES ⭐️ --- */
+
+/* SUNNY / CLEAR DAY BACKGROUND */
+[data-theme='day'][data-weather='clear'],
+[data-theme='day'][data-weather='sunny'] {
+   --bg-top: #2980b9; /* Bright Sky Blue */
+   --bg-mid: #3498db;
+   --bg-bot: #85c1e9;
+}
+/* Clear Night (Minimal color) */
+[data-theme='night'][data-weather='clear'] {
+   --bg-top: #000000;
+   --bg-mid: #0f0f29;
+   --bg-bot: #2c3e50;
+}
+
+/* RAINY / DRIZZLE BACKGROUND (Overrides Day/Night colors) */
+[data-weather='rain'] {
+   --bg-top: #2c3e50; /* Darker Blue/Gray */
+   --bg-mid: #5d6d7e;
+   --bg-bot: #7f8c8d;
+}
+
+/* SNOWY / BLIZZARD BACKGROUND (Overrides Day/Night colors) */
+[data-weather='snow'] {
+   --bg-top: #b5b8bd; /* Light Gray/White */
+   --bg-mid: #d7dbdd;
+   --bg-bot: #e8e8e8;
+   --text-primary: #333333; /* Dark text for light background */
+   --text-secondary: rgba(51, 51, 51, 0.7);
+}
+
+/* THUNDER / STORMY BACKGROUND (Overrides Day/Night colors) */
+[data-weather='thunder'] {
+   --bg-top: #0e0e1a;
+   --bg-mid: #342e47; /* Deep Purple/Black */
+   --bg-bot: #4d445a;
+   /* Add a slight flicker effect to simulate lightning */
+   animation: thunder 10s infinite;
+}
+
+@keyframes thunder {
+   0%, 100% { background-color: var(--bg-top); }
+   30% { background-color: var(--bg-top); }
+   30.5% { background-color: #ffffff; } /* Flash */
+   31% { background-color: var(--bg-top); }
+   70% { background-color: var(--bg-top); }
+   70.3% { background-color: #ffffff; } /* Flash */
+   70.6% { background-color: var(--bg-top); }
+}
+
+/* --- ⭐️ END DYNAMIC BACKGROUND OVERRIDES ⭐️ --- */
 
 
 * {
@@ -245,7 +301,7 @@ body {
 }
 
 
-/* ⭐️ FIXED: ALIGNMENT FOR "FEELS LIKE" */
+/* FIXED: ALIGNMENT FOR "FEELS LIKE" */
 .location-info h1 {
    font-size: 2.5rem;
    font-weight: 600;
@@ -267,7 +323,6 @@ body {
    margin-top: 0.5rem;
    opacity: 0.9;
 }
-/* END FIXED: ALIGNMENT FOR "FEELS LIKE" */
 
 
 .country {
@@ -350,7 +405,7 @@ body {
 }
 
 
-/* ⭐️ FIXED: Weather Details Item Stacking (Visibility, UV Index, etc.) */
+/* FIXED: Weather Details Item Stacking (Visibility, UV Index, etc.) */
 .detail-item {
    display: flex;
    align-items: flex-start; /* Aligns the icon to the top of the text block */
@@ -391,14 +446,13 @@ body {
    font-weight: 500;
    line-height: 1.2;
 }
-/* END FIXED: Weather Details Item Stacking */
 
 
-/* Hourly Forecast */
+/* Hourly and Weekly Forecast Container Styles */
 .hourly-forecast, .weekly-forecast {
    background: var(--card-bg);
    border-radius: var(--bdrs);
-   /* ⭐️ FIXED: Remove horizontal padding here and add vertical padding to allow inner container to manage spacing */
+   /* FIXED: Remove horizontal padding here and add vertical padding to allow inner container to manage spacing */
    padding: 1.5rem 0; 
    border: 1px solid var(--card-border);
    backdrop-filter: blur(20px);
@@ -420,7 +474,7 @@ body {
    gap: 1rem;
    overflow-x: auto;
    padding-bottom: 1rem;
-   /* ⭐️ FIXED: Add left padding to scrolling content to align with title/card edges */
+   /* FIXED: Add left padding to scrolling content to align with title/card edges */
    padding-left: 1.5rem; 
 }
 
@@ -839,8 +893,6 @@ body {
 }
 
 
-
-
 /* ---------- NIGHT-SKY DARK MODE ---------- */
 /* star field */
 .stars{
@@ -851,7 +903,7 @@ body {
  opacity:0;
  transition:opacity 1s;
 }
-[data-theme='night'] .stars{opacity:1}
+[data-theme='night'][data-weather='clear'] .stars{opacity:1}
 
 
 .star{
@@ -891,8 +943,6 @@ body {
 }
 
 
-
-
 /* Sun (day-mode only) */
 .sun{
  position:fixed;
@@ -918,8 +968,6 @@ body {
 }
 
 
-
-
 .map-card iframe{border-radius:14px;background:#0002}
 
 
@@ -933,15 +981,7 @@ body {
 .extra-item b{font-size:1rem;margin-top:.2rem}
 
 
-
-
-
-
-/* --- RAIN MAP AND MOON PHASE LAYOUT FIX ---
-  
-   This is the dedicated Flexbox container for the Map and Moon cards.
-   It forces its children to be side-by-side, resolving the stacking issue.
-*/
+/* --- RAIN MAP AND MOON PHASE LAYOUT FIX --- */
 .rain-moon-row {
  display: flex; /* <-- FIX: Forces horizontal layout */
  gap: 1.5rem;   /* Spacing between the map and moon card */

@@ -50,10 +50,18 @@ function toggleRain(on){
   }
 }
 
-/* inside displayWeatherData() add --------------------------------
-   const cond=document.getElementById('weatherDesc').textContent.toLowerCase();
-   toggleRain(cond.includes('rain')||cond.includes('drizzle'));
-------------------------------------------------------------------*/
+// Helper to determine the general weather category for CSS styling
+function getWeatherCategory(conditionText) {
+    const text = conditionText.toLowerCase();
+
+    if (text.includes('sunny') || text.includes('clear')) return 'clear';
+    if (text.includes('rain') || text.includes('drizzle')) return 'rain';
+    if (text.includes('snow') || text.includes('sleet') || text.includes('ice') || text.includes('blizzard')) return 'snow';
+    if (text.includes('thunder')) return 'thunder';
+    if (text.includes('cloud') || text.includes('overcast') || text.includes('mist') || text.includes('fog')) return 'cloudy';
+
+    return 'default';
+}
 
 // Weather App JavaScript - Using WeatherAPI.com
 class WeatherApp {
@@ -93,8 +101,7 @@ class WeatherApp {
         // Theme toggle
         document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
 
-        // ⭐️ FIX/CONFIRMATION: The unit next to the main temperature is the clickable element.
-        // It's already in the HTML as: <span class="temp-unit" id="tempUnit">°C</span>
+        // Temperature unit toggle (clickable unit next to temp)
         document.getElementById('tempUnit').addEventListener('click', () => this.toggleTempUnit());
 
         // Retry button
@@ -109,6 +116,9 @@ class WeatherApp {
         // Update theme icon
         const themeIcon = document.querySelector('#themeToggle i');
         themeIcon.className = theme === 'day' ? 'fas fa-sun' : 'fas fa-moon';
+
+        // Re-apply weather data to update moon/sun if the theme changes hourly
+        if(this.weatherData) this.displayWeatherData();
     }
 
     toggleTheme() {
@@ -168,7 +178,6 @@ class WeatherApp {
         try {
             const currentUrl = `${this.baseUrl}/current.json?key=${this.apiKey}&q=${location}&aqi=yes`;
             
-            // 💡 FIX: Updated days=7 to days=10 for 10-day forecast
             const forecastUrl = `${this.baseUrl}/forecast.json?key=${this.apiKey}&q=${location}&days=10&aqi=yes&alerts=yes`;
             
             const [currentResponse, forecastResponse] = await Promise.all([
@@ -223,13 +232,31 @@ class WeatherApp {
         document.getElementById('cloudCover').textContent = `${current.current.cloud}%`;
         document.getElementById('precipitation').textContent = `${current.current.precip_mm} mm`;
 
-        /* inside displayWeatherData() , after precipitation line */
+        // --- START DYNAMIC BACKGROUND LOGIC ---
+        const conditionText = current.current.condition.text;
+        const weatherCategory = getWeatherCategory(conditionText);
+
+        // 1. Apply the new data-weather attribute to the body for CSS changes
+        document.body.setAttribute('data-weather', weatherCategory);
+
+        // 2. Control Rain Drops
+        toggleRain(weatherCategory === 'rain');
+        
+        // 3. Control Cloud Visibility (Hide existing floating clouds if it's clear/sunny)
+        const cloudLayer = document.querySelector('.cloud-layer');
+        if (weatherCategory === 'clear' || weatherCategory === 'sunny') {
+             cloudLayer.style.opacity = 0;
+        } else {
+             cloudLayer.style.opacity = 0.6;
+        }
+        // --- END DYNAMIC BACKGROUND LOGIC ---
+
+        
         const rainMap = document.getElementById('rainMap');
-        // NOTE: Using a public map service here. If it is blocked, the map will not appear.
-        rainMap.src = `https://www.rainviewer.com/map.html?lat=${current.location.lat}&lon=${current.location.lon}&zoom=8&layer=precipitation`;
+        // NOTE: The URL is set in HTML, but here's how you'd update it dynamically if needed:
+        // rainMap.src = `https://embed.windy.com/embed2.html?lat=${current.location.lat}&lon=${current.location.lon}&zoom=8&overlay=rain&product=radar&menu=false`;
 
 
-        /* inside displayWeatherData() , AFTER rain-map line */
         const phase = forecast.forecast.forecastday[0].astro.moon_phase;
         const illum = forecast.forecast.forecastday[0].astro.moon_illumination;
         document.getElementById('moonIllum').textContent = `${illum}%`;
@@ -266,10 +293,6 @@ class WeatherApp {
         const emoji = condToEmoji(current.current.condition.text);
         document.getElementById('weatherEmoji').textContent = emoji;
         
-        const cond=document.getElementById('weatherDesc').textContent.toLowerCase();
-        toggleRain(cond.includes('rain')||cond.includes('drizzle'));
-
-
         // Update sun times
         document.getElementById('sunrise').textContent = forecast.forecast.forecastday[0].astro.sunrise;
         document.getElementById('sunset').textContent = forecast.forecast.forecastday[0].astro.sunset;
@@ -386,7 +409,7 @@ class WeatherApp {
             const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
             // Use the correct temperature unit
             const maxTemp = this.currentUnit === 'C' ? Math.round(day.day.maxtemp_c) : Math.round(day.day.maxtemp_f);
-            const minTemp = this.currentUnit === 'C' ? Math.round(day.day.mintemp_c) : Math.round(day.day.minttemp_f);
+            const minTemp = this.currentUnit === 'C' ? Math.round(day.day.mintemp_c) : Math.round(day.day.mintemp_f);
             const iconCode = day.day.condition.code;
             
             const dailyItem = document.createElement('div');
@@ -406,8 +429,6 @@ class WeatherApp {
         this.currentUnit = this.currentUnit === 'C' ? 'F' : 'C';
         document.getElementById('tempUnit').textContent = `°${this.currentUnit}`;
         
-        // This is the key: after toggling the unit, re-render all weather data
-        // to update all temperature values (current, hourly, weekly, feels like, etc.).
         if (this.weatherData) {
             this.displayWeatherData();
         }
