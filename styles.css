@@ -35,7 +35,7 @@
 }
 
 
-/* --- ⭐️ START DYNAMIC BACKGROUND OVERRIDES ⭐️ --- */
+/* --- ⭐️ DYNAMIC BACKGROUND OVERRIDES ⭐️ --- */
 
 /* SUNNY / CLEAR DAY BACKGROUND */
 [data-theme='day'][data-weather='clear'],
@@ -86,7 +86,7 @@
    70.6% { background-color: var(--bg-top); }
 }
 
-/* --- ⭐️ END DYNAMIC BACKGROUND OVERRIDES ⭐️ --- */
+/* --- END DYNAMIC BACKGROUND OVERRIDES --- */
 
 
 * {
@@ -448,7 +448,7 @@ body {
 }
 
 
-/* Hourly and Weekly Forecast Container Styles */
+/* Hourly and Weekly Forecast Container Styles (Fixed Spacing) */
 .hourly-forecast, .weekly-forecast {
    background: var(--card-bg);
    border-radius: var(--bdrs);
