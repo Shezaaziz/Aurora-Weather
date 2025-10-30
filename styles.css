@@ -1,0 +1,1011 @@
+:root {
+   --font: 'Inter', sans-serif;
+   --bdrs: 20px;
+   --tran: all 0.3s ease;
+   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+
+[data-theme='day'] {
+    --bg-primary: linear-gradient(135deg, #3684ab 0%, #764ba2 100%);
+   --bg-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+   --text-primary: #ffffff;
+   --text-secondary: rgba(255, 255, 255, 0.8);
+   --card-bg: rgba(255, 255, 255, 0.1);
+   --card-border: rgba(255, 255, 255, 0.2);
+   --bg-top:#1e3c72;
+   --bg-mid:#2a5298;
+   --bg-bot:#7e8ba3;
+}
+
+
+[data-theme='night'] {
+   --bg-primary: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+   --bg-secondary: linear-gradient(135deg, #24243e 0%, #302b63 100%);
+   --text-primary: #ffffff;
+   --text-secondary: rgba(255, 255, 255, 0.7);
+   --card-bg: rgba(255, 255, 255, 0.05);
+   --card-border: rgba(255, 255, 255, 0.1);
+   --bg-top:#000000;
+   --bg-mid:#0b0b1a;
+   --bg-bot:#111122;
+}
+
+
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+
+body {
+   font-family: var(--font);
+   min-height: 100vh;
+   /* Updated background definition */
+   background: linear-gradient(to bottom,var(--bg-top),var(--bg-mid),var(--bg-bot));
+   color: var(--text-primary);
+   line-height: 1.6;
+   transition: var(--tran);
+   overflow-x: hidden;
+   position:relative;
+}
+
+
+.background-overlay {
+   position: fixed;
+   inset: 0;
+   background: url('https://www.transparenttextures.com/patterns/clean-textile.png');
+   opacity: 0.1;
+   z-index: -1;
+   animation: float 20s ease-in-out infinite;
+}
+
+
+@keyframes float {
+   0%, 100% { transform: translateY(0px); }
+   50% { transform: translateY(-20px); }
+}
+
+
+.container {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 0 2rem;
+}
+
+
+/* Header */
+.header {
+   width: 100%;
+   backdrop-filter: blur(20px);
+   background: var(--card-bg);
+   border-bottom: 1px solid var(--card-border);
+   position: sticky;
+   top: 0;
+   z-index: 100;
+   animation: slideDown 0.5s ease-out;
+}
+
+
+@keyframes slideDown {
+   from { transform: translateY(-100%); opacity: 0; }
+   to { transform: translateY(0); opacity: 1; }
+}
+
+
+.nav {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 1rem 0;
+   gap: 2rem;
+}
+
+
+.logo {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   font-size: 1.5rem;
+   font-weight: 600;
+   color: var(--text-primary);
+}
+
+
+.logo i {
+   font-size: 2rem;
+   animation: pulse 2s infinite;
+}
+
+
+@keyframes pulse {
+   0%, 100% { transform: scale(1); }
+   50% { transform: scale(1.1); }
+}
+
+
+.search-container {
+   display: flex;
+   align-items: center;
+   background: var(--card-bg);
+   border-radius: var(--bdrs);
+   padding: 0.5rem;
+   border: 1px solid var(--card-border);
+   flex: 1;
+   max-width: 400px;
+   transition: var(--tran);
+}
+
+
+.search-container:focus-within {
+   border-color: rgba(255, 255, 255, 0.5);
+   box-shadow: var(--shadow);
+}
+
+
+#searchInput {
+   flex: 1;
+   border: none;
+   outline: none;
+   padding: 0.5rem 1rem;
+   background: transparent;
+   color: var(--text-primary);
+   font-size: 1rem;
+}
+
+
+#searchInput::placeholder {
+   color: var(--text-secondary);
+}
+
+
+#searchBtn {
+   background: none;
+   border: none;
+   color: var(--text-primary);
+   cursor: pointer;
+   padding: 0.5rem;
+   font-size: 1.2rem;
+   transition: var(--tran);
+}
+
+
+#searchBtn:hover {
+   transform: scale(1.1);
+}
+
+
+.nav-buttons {
+   display: flex;
+   gap: 0.5rem;
+}
+
+
+.nav-buttons button {
+   background: var(--card-bg);
+   border: 1px solid var(--card-border);
+   border-radius: 50%;
+   width: 45px;
+   height: 45px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   color: var(--text-primary);
+   transition: var(--tran);
+}
+
+
+.nav-buttons button:hover {
+   background: rgba(255, 255, 255, 0.2);
+   transform: translateY(-2px);
+}
+
+
+/* Main Content */
+.main {
+   padding: 2rem 0;
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+}
+
+
+/* Current Weather */
+.current-weather {
+   animation: fadeIn 1s ease-out;
+}
+
+
+.weather-card {
+   background: var(--card-bg);
+   border-radius: var(--bdrs);
+   padding: 2rem;
+   border: 1px solid var(--card-border);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--shadow-lg);
+   transition: var(--tran);
+}
+
+
+.weather-card:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+
+.weather-main {
+   /* Ensures two columns: Location/Description (left) and Temp/Icon (right) */
+   display: grid;
+   grid-template-columns: 1fr auto;
+   gap: 2rem;
+   margin-bottom: 2rem;
+}
+
+
+/* ⭐️ FIXED: ALIGNMENT FOR "FEELS LIKE" */
+.location-info h1 {
+   font-size: 2.5rem;
+   font-weight: 600;
+   margin-bottom: 0.5rem;
+}
+
+
+.location-info p {
+   color: var(--text-secondary);
+   font-size: 1.1rem;
+}
+
+
+/* Style the "Feels like" paragraph to look subtle but clear, aligning with location info */
+#feelsLike {
+   font-size: 1rem;
+   font-weight: 400;
+   color: var(--text-secondary);
+   margin-top: 0.5rem;
+   opacity: 0.9;
+}
+/* END FIXED: ALIGNMENT FOR "FEELS LIKE" */
+
+
+.country {
+   font-size: 0.9rem;
+   color: var(--text-secondary);
+   opacity: 0.8;
+}
+
+
+.temperature-display {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+}
+
+
+.temp-main {
+   font-size: 5rem;
+   font-weight: 300;
+   line-height: 1;
+}
+
+
+.temp-unit {
+   font-size: 2rem;
+   color: var(--text-secondary);
+   cursor: pointer;
+   transition: var(--tran);
+}
+
+
+.temp-unit:hover {
+   color: var(--text-primary);
+}
+
+
+.weather-icon-main {
+   font-size: 5rem;
+   animation: bounce 2s infinite;
+}
+
+
+@keyframes bounce {
+   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+   40% { transform: translateY(-10px); }
+   60% { transform: translateY(-5px); }
+}
+
+
+.weather-description {
+   /* FIX: Align the weather description text (like 'Clear') to the left,
+      matching the location info column above it. */
+   text-align: left;
+   margin-top: 1rem;
+   /* Span both columns in the main grid layout */
+   grid-column: 1 / -1;
+}
+
+
+.weather-description p:first-child {
+   font-size: 1.5rem;
+   margin-bottom: 0.5rem;
+   text-transform: capitalize;
+}
+
+
+.weather-description p:last-child {
+   color: var(--text-secondary);
+   font-size: 1.1rem;
+   /* HIDE the old "Feels like" paragraph here since we are moving it to .location-info */
+   display: none;
+}
+
+
+.weather-details {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+   gap: 1.5rem;
+   margin-top: 2rem;
+}
+
+
+/* ⭐️ FIXED: Weather Details Item Stacking (Visibility, UV Index, etc.) */
+.detail-item {
+   display: flex;
+   align-items: flex-start; /* Aligns the icon to the top of the text block */
+   gap: 1rem;
+   padding: 1rem;
+   background: rgba(255, 255, 255, 0.05);
+   border-radius: calc(var(--bdrs) / 2);
+   transition: var(--tran);
+}
+
+.detail-item:hover {
+   background: rgba(255, 255, 255, 0.1);
+   transform: translateY(-2px);
+}
+
+.detail-item i {
+   font-size: 1.5rem;
+   color: var(--text-primary);
+   opacity: 0.8;
+}
+
+/* NEW CLASS: Wrapper for Label and Value */
+.detail-item .text-content {
+    display: flex;
+    flex-direction: column; /* Stacks label and value vertically */
+}
+
+.detail-item .label {
+   font-size: 0.9rem;
+   color: var(--text-secondary);
+   margin-bottom: 0; /* Adjusted from 0.25rem for tighter stacking */
+   line-height: 1.2;
+}
+
+/* Targeting the value span within the new wrapper */
+.detail-item .text-content span:last-child {
+   font-size: 1.1rem;
+   font-weight: 500;
+   line-height: 1.2;
+}
+/* END FIXED: Weather Details Item Stacking */
+
+
+/* Hourly Forecast */
+.hourly-forecast, .weekly-forecast {
+   background: var(--card-bg);
+   border-radius: var(--bdrs);
+   /* ⭐️ FIXED: Remove horizontal padding here and add vertical padding to allow inner container to manage spacing */
+   padding: 1.5rem 0; 
+   border: 1px solid var(--card-border);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--shadow);
+}
+
+
+.hourly-forecast h2, .weekly-forecast h2 {
+   /* Add the horizontal padding back to the title to keep it aligned */
+   padding: 0 1.5rem;
+   margin-bottom: 1rem;
+   font-size: 1.3rem;
+   font-weight: 500;
+}
+
+
+.hourly-container, .weekly-container {
+   display: flex;
+   gap: 1rem;
+   overflow-x: auto;
+   padding-bottom: 1rem;
+   /* ⭐️ FIXED: Add left padding to scrolling content to align with title/card edges */
+   padding-left: 1.5rem; 
+}
+
+
+.hourly-item, .weekly-item {
+   min-width: 80px;
+   text-align: center;
+   padding: 1rem;
+   background: rgba(255, 255, 255, 0.05);
+   border-radius: calc(var(--bdrs) / 2);
+   transition: var(--tran);
+}
+
+
+.hourly-item:hover, .weekly-item:hover {
+   background: rgba(255, 255, 255, 0.1);
+   transform: translateY(-3px);
+}
+
+
+.hourly-item .time, .weekly-item .day {
+   font-size: 0.9rem;
+   color: var(--text-secondary);
+   margin-bottom: 0.5rem;
+}
+
+
+.hourly-item .icon, .weekly-item .icon {
+   font-size: 2rem;
+   margin: 0.5rem 0;
+}
+
+
+.hourly-item .temp, .weekly-item .temp {
+   font-size: 1.1rem;
+   font-weight: 500;
+}
+
+
+/* Additional Info */
+.additional-info {
+   margin-top: 1rem;
+}
+
+
+.info-grid {
+   /* Adjusted grid-template-columns to handle the first four cards */
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   gap: 1.5rem;
+}
+
+
+.info-card {
+   background: var(--card-bg);
+   border-radius: var(--bdrs);
+   padding: 1.5rem;
+   border: 1px solid var(--card-border);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--shadow);
+   transition: var(--tran);
+}
+
+
+.info-card:hover {
+   transform: translateY(-3px);
+}
+
+
+.info-card h3 {
+   margin-bottom: 1rem;
+   font-size: 1.1rem;
+   font-weight: 500;
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+}
+
+
+.sun-times, .wind-details {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+}
+
+
+.sun-item, .wind-item {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+
+.sun-item i {
+   font-size: 1.2rem;
+   color: var(--text-secondary);
+}
+
+
+.label {
+   font-size: 0.9rem;
+   color: var(--text-secondary);
+}
+
+
+.cloud-info, .precip-info {
+   font-size: 1.5rem;
+   font-weight: 600;
+   text-align: center;
+   margin-top: 1rem;
+}
+
+
+/* Loading & Error States */
+.loading {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.8);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1000;
+   opacity: 0;
+   visibility: hidden;
+   transition: var(--tran);
+}
+
+
+.loading.active {
+   opacity: 1;
+   visibility: visible;
+}
+
+
+.spinner {
+   width: 50px;
+   height: 50px;
+   border: 4px solid rgba(255, 255, 255, 0.3);
+   border-top: 4px solid var(--text-primary);
+   border-radius: 50%;
+   animation: spin 1s linear infinite;
+}
+
+
+@keyframes spin {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+}
+
+
+.error-message {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background: var(--card-bg);
+   padding: 2rem;
+   border-radius: var(--bdrs);
+   border: 1px solid var(--card-border);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--shadow-lg);
+   text-align: center;
+   z-index: 1001;
+   opacity: 0;
+   visibility: hidden;
+   transition: var(--tran);
+}
+
+
+.error-message.active {
+   opacity: 1;
+   visibility: visible;
+}
+
+
+.error-message i {
+   font-size: 3rem;
+   color: #ff4757;
+   margin-bottom: 1rem;
+}
+
+
+.error-message p {
+   margin-bottom: 1.5rem;
+   color: var(--text-secondary);
+}
+
+
+#retryBtn {
+   background: var(--text-primary);
+   color: var(--bg-primary);
+   border: none;
+   padding: 0.75rem 2rem;
+   border-radius: 25px;
+   cursor: pointer;
+   font-size: 1rem;
+   font-weight: 500;
+   transition: var(--tran);
+}
+
+
+#retryBtn:hover {
+   transform: translateY(-2px);
+   box-shadow: var(--shadow);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+   .nav {
+       flex-wrap: wrap;
+       gap: 1rem;
+   }
+  
+   .search-container {
+       order: 3;
+       flex-basis: 100%;
+       max-width: none;
+   }
+  
+   .weather-main {
+       /* FIX: Ensure description is centered on mobile when it spans the whole grid */
+       grid-template-columns: 1fr;
+       text-align: center;
+   }
+  
+   .temp-main {
+       font-size: 4rem;
+   }
+  
+   .weather-icon-main {
+       font-size: 4rem;
+   }
+  
+   .weather-details {
+       grid-template-columns: repeat(2, 1fr);
+   }
+  
+   /* On small screens, force the map/moon section to stack vertically */
+   .rain-moon-row {
+       flex-direction: column;
+       gap: 1.5rem;
+   }
+   .rain-moon-row > .info-card {
+       min-width: 100%;
+   }
+  
+   .info-grid {
+       grid-template-columns: 1fr;
+   }
+}
+
+
+@media (max-width: 480px) {
+   .container {
+       padding: 0 1rem;
+   }
+  
+   .temp-main {
+       font-size: 3rem;
+   }
+  
+   .weather-icon-main {
+       font-size: 3rem;
+   }
+  
+   .weather-details {
+       grid-template-columns: 1fr;
+   }
+  
+   /* FIX: On mobile, center location info as well */
+   .location-info {
+       text-align: center;
+   }
+}
+
+
+/* Animation Classes */
+.fade-in {
+   animation: fadeIn 0.8s ease-out;
+}
+
+
+@keyframes fadeIn {
+   from { opacity: 0; transform: translateY(30px); }
+   to { opacity: 1; transform: translateY(0); }
+}
+
+
+.slide-in {
+   animation: slideIn 0.6s ease-out;
+}
+
+
+@keyframes slideIn {
+   from { transform: translateX(-100%); opacity: 0; }
+   to { transform: translateX(0); opacity: 1; }
+}
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+   width: 8px;
+   height: 8px;
+}
+
+
+::-webkit-scrollbar-track {
+   background: rgba(255, 255, 255, 0.1);
+   border-radius: 4px;
+}
+
+
+::-webkit-scrollbar-thumb {
+   background: rgba(255, 255, 255, 0.3);
+   border-radius: 4px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+   background: rgba(255, 255, 255, 0.5);
+}
+
+
+/* Moving cloud layer */
+.cloud-layer{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:-1;
+ opacity:.6;
+}
+
+
+.cloud{
+ position:absolute;
+ background:white;
+ border-radius:100px;
+ opacity:.8;
+ filter:blur(2px);
+ animation:drift linear infinite;
+}
+
+
+/* Cloud shapes (pure CSS) */
+.cloud::before,
+.cloud::after{
+ content:'';
+ position:absolute;
+ background:white;
+ border-radius:50%;
+}
+.cloud::before{width:50%;height:100%;top:-25%;left:10%;}
+.cloud::after{width:60%;height:120%;top:-40%;right:10%;}
+
+
+@keyframes drift{
+ from{transform:translateX(-150px);}
+ to{transform:translateX(calc(100vw + 150px));}
+}
+
+
+/* Rain drops (optional) */
+.rain-drop{
+ position:fixed;
+ top:-10px;
+ width:1px;
+ height:25px;
+ background:rgba(255,255,255,.6);
+ animation:fall linear infinite;
+ z-index:-1;
+}
+@keyframes fall{
+ to{transform:translateY(110vh);}
+}
+/* Emoji-style hourly row */
+.hourly-emoji {
+ display: flex;
+ gap: 1.2rem;
+ overflow-x: auto;
+ padding: 1rem 0 1.5rem;
+ scrollbar-width: thin;
+}
+.hour-emoji {
+ flex: 0 0 auto;
+ text-align: center;
+ animation: pop 0.5s ease forwards;
+}
+.hour-emoji .emoji {
+ font-size: 3rem;          /* giant emoji */
+ line-height: 1;
+ margin-bottom: 0.3rem;
+ filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+.hour-emoji .time {
+ font-size: 0.8rem;
+ opacity: 0.85;
+}
+.hour-emoji .temp {
+ font-size: 1.1rem;
+ font-weight: 600;
+}
+@keyframes pop {
+ 0%   { transform: scale(0.6); opacity: 0; }
+ 100% { transform: scale(1);   opacity: 1; }
+}
+
+
+/* give the 7-day strip breathing room on the right */
+.weekly-container {
+ padding-right: 1.5rem;   /* ← adds empty space after last card */
+ gap: 1rem;               /* keep your existing gap */
+}
+
+
+
+
+/* ---------- NIGHT-SKY DARK MODE ---------- */
+/* star field */
+.stars{
+ position:fixed;
+ inset:0;
+ z-index:-2;
+ pointer-events:none;
+ opacity:0;
+ transition:opacity 1s;
+}
+[data-theme='night'] .stars{opacity:1}
+
+
+.star{
+ position:absolute;
+ width:2px;
+ height:2px;
+ background:white;
+ border-radius:50%;
+ animation:twinkle 4s infinite;
+}
+@keyframes twinkle{
+ 0%,100%{opacity:.2;transform:scale(.8);}
+ 50%{opacity:1;transform:scale(1.2);}
+}
+/* Moon (dark-mode only) */
+.moon{
+ position:fixed;
+ top:10%;
+ right:8%;
+ width:70px;
+ height:70px;
+ background:#f9f4d4;
+ border-radius:50%;
+ box-shadow:0 0 20px 5px #f9f4d480;
+ opacity:0;
+ transition:opacity 1.5s;
+ z-index:-1;
+ animation:moonDrift 60s linear infinite alternate;
+}
+[data-theme='night'] .moon{opacity:1}
+
+
+/* gentle drift */
+@keyframes moonDrift{
+ from{transform:translate(0,0);}
+ to{transform:translate(-15px,-8px);}
+}
+
+
+
+
+/* Sun (day-mode only) */
+.sun{
+ position:fixed;
+ top:10%;
+ right:8%;
+ width:70px;
+ height:70px;
+ background:#ffd33b;
+ border-radius:50%;
+ box-shadow:0 0 25px 8px #ffd33b80;
+ opacity:0;
+ transition:opacity 1.5s;
+ z-index:-1;
+ animation:sunDrift 60s linear infinite alternate;
+}
+[data-theme='day'] .sun{opacity:1}
+
+
+/* gentle drift */
+@keyframes sunDrift{
+ from{transform:translate(0,0);}
+ to{transform:translate(15px,-8px);}
+}
+
+
+
+
+.map-card iframe{border-radius:14px;background:#0002}
+
+
+.moon-section{margin-top:1.5rem}
+.moon-wrap{display:flex;align-items:center;gap:1.2rem}
+.moon-info{display:flex;flex-direction:column;font-size:1.1rem}
+#moonImg{border-radius:50%;box-shadow:0 0 15px 3px #ffffff30}
+.moon-extras{display:flex;justify-content:space-around;margin-top:1rem;font-size:.95rem}
+.extra-item{text-align:center}
+.extra-item span{display:block;opacity:.7;font-size:.8rem}
+.extra-item b{font-size:1rem;margin-top:.2rem}
+
+
+
+
+
+
+/* --- RAIN MAP AND MOON PHASE LAYOUT FIX ---
+  
+   This is the dedicated Flexbox container for the Map and Moon cards.
+   It forces its children to be side-by-side, resolving the stacking issue.
+*/
+.rain-moon-row {
+ display: flex; /* <-- FIX: Forces horizontal layout */
+ gap: 1.5rem;   /* Spacing between the map and moon card */
+ margin-top: 1.5rem; /* Add some margin above this section */
+ width: 100%;
+}
+
+
+.rain-moon-row > .info-card {
+ flex: 1 1 0; /* Equal width and allows shrinking if needed */
+ min-width: 330px; /* Ensures card doesn't get too small on wider screens */
+ height: 350px; /* Fixed height for visual alignment */
+  /* Ensure content fills the height, especially for the iframe */
+ display: flex;
+ flex-direction: column;
+}
+
+
+.map-card iframe {
+ flex: 1; /* Makes the iframe fill all available vertical space */
+ border-radius: 14px;
+}
+
+
+.moon-card {
+ /* Inner Moon Card Styling */
+ text-align: center;
+ align-items: center; /* Center content vertically (for the whole card) */
+ justify-content: space-around; /* Distribute space inside the column */
+}
+#moonImg {
+ border-radius: 50%;
+ margin: .5rem auto;
+}
+.moon-stack {
+ width: 100%;
+ margin-top: 1rem;
+}
+.moon-line {
+ display: flex;
+ justify-content: space-between;
+ padding: .25rem 0;
+ font-size: .95rem;
+}
+.moon-line b {
+ font-weight: 600;
+}
+
+
+/* Remove redundant/conflicting styles */
+.map-card,
+.moon-card {
+ height: 350px;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+}
+.map-card iframe,
+.moon-wrap {
+ flex: 1;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 1rem;
+}
+.moon-card{ text-align:center }
+#moonImg, #moonEmoji{ margin:.5rem auto }
